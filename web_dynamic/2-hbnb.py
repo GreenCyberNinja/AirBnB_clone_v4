@@ -2,10 +2,9 @@
 """ Starts a Flash Web Application """
 from models import storage
 from models.state import State
-from models.city import City
 from models.amenity import Amenity
 from models.place import Place
-from os import environ
+import uuid
 from flask import Flask, render_template
 app = Flask(__name__)
 # app.jinja_env.trim_blocks = True
@@ -18,7 +17,7 @@ def close_db(error):
     storage.close()
 
 
-@app.route('/2-hbnb/', strict_slashes=False)
+@app.route('/1-hbnb/', strict_slashes=False)
 def hbnb():
     """ HBNB is alive! """
     states = storage.all(State).values()
@@ -37,7 +36,7 @@ def hbnb():
     return render_template('2-hbnb.html',
                            states=st_ct,
                            amenities=amenities,
-                           cache_id = uuid.uuid4(),
+                           cache_id=uuid.uuid4(),
                            places=places)
 
 
