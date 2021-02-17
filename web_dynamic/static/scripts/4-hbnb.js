@@ -22,65 +22,109 @@ $(document).ready(function () {
       $('div.amenities h4').append(amenities[key].replace(' ', '&nbsp;'));
     });
   });
+  $.ajax({
+    type: 'POST',
+    url: 'http://localhost:5001/api/v1/places_search/',
+    dataType: 'json',
+    data: JSON.stringify({ amenities: Object.keys(amenities) }),
+    contentType: 'application/json',
+    success: function (data) {
+      $('section.places').empty();
+      data.forEach(function (place) {
+        let htmlString =
+          `<article>
+            <div class="title_box">
+              <h2>` +
+          place.name +
+          `</h2>
+              <div class="price_by_night">` +
+          place.price_by_night +
+          `</div>
+            </div>
+            <div class="information">
+          <div class="max_guest">` +
+          place.max_guest;
+        if (place.max_guest != 1) {
+          htmlString += ` Guests</div>`;
+        } else {
+          htmlString += ` Guest</div>`;
+        }
+        htmlString += `<div class="number_rooms">` + place.number_rooms;
+        if (place.number_rooms != 1) {
+          htmlString += ` Bedrooms</div>`;
+        } else {
+          htmlString += ` Bedroom</div>`;
+        }
+        htmlString += `<div class="number_bathrooms">` + place.number_bathrooms;
+        if (place.number_bathrooms != 1) {
+          htmlString += ` Bathrooms</div>`;
+        } else {
+          htmlString += ` Bathroom</div>`;
+        }
+        htmlString +=
+          `</div>
+            <div class="user">
+                </div>
+                <div class="description">` +
+          place.description +
+          `</div>
+          </article>`;
+        $('section.places').append(htmlString);
+      });
+    },
+  });
   $('button').click(function () {
-    $.ajax(
-      {
-        type: 'POST',
-        url: 'http://localhost:5001/api/v1/places_search/',
-        dataType: 'json',
-        data: JSON.stringify({ amenities: Object.keys(amenities) }),
-        contentType: 'application/json',
-        success: function (data) {
-          $('section.places').empty();
-          data.forEach(function (place) {
-            let htmlString =
-              `<article>
+    $.ajax({
+      type: 'POST',
+      url: 'http://localhost:5001/api/v1/places_search/',
+      dataType: 'json',
+      data: JSON.stringify({ amenities: Object.keys(amenities) }),
+      contentType: 'application/json',
+      success: function (data) {
+        $('section.places').empty();
+        data.forEach(function (place) {
+          let htmlString =
+            `<article>
               <div class="title_box">
                 <h2>` +
-              place.name +
-              `</h2>
+            place.name +
+            `</h2>
                 <div class="price_by_night">` +
-              place.price_by_night +
-              `</div>
+            place.price_by_night +
+            `</div>
               </div>
               <div class="information">
             <div class="max_guest">` +
-              place.max_guest;
-            if (place.max_guest != 1) {
-              htmlString += ` Guests</div>`;
-            } else {
-              htmlString += ` Guest</div>`;
-            }
-            htmlString += `<div class="number_rooms">` + place.number_rooms;
-            if (place.number_rooms != 1) {
-              htmlString += ` Bedrooms</div>`;
-            } else {
-              htmlString += ` Bedroom</div>`;
-            }
-            htmlString +=
-              `<div class="number_bathrooms">` + place.number_bathrooms;
-            if (place.number_bathrooms != 1) {
-              htmlString += ` Bathrooms</div>`;
-            } else {
-              htmlString += ` Bathroom</div>`;
-            }
-            htmlString +=
-              `</div>
+            place.max_guest;
+          if (place.max_guest != 1) {
+            htmlString += ` Guests</div>`;
+          } else {
+            htmlString += ` Guest</div>`;
+          }
+          htmlString += `<div class="number_rooms">` + place.number_rooms;
+          if (place.number_rooms != 1) {
+            htmlString += ` Bedrooms</div>`;
+          } else {
+            htmlString += ` Bedroom</div>`;
+          }
+          htmlString +=
+            `<div class="number_bathrooms">` + place.number_bathrooms;
+          if (place.number_bathrooms != 1) {
+            htmlString += ` Bathrooms</div>`;
+          } else {
+            htmlString += ` Bathroom</div>`;
+          }
+          htmlString +=
+            `</div>
               <div class="user">
                   </div>
                   <div class="description">` +
-              place.description +
-              `</div>
+            place.description +
+            `</div>
             </article>`;
-            $('section.places').append(htmlString);
-          });
-        },
-      },
-      function (data) {
-        data.forEach((place) => {
-          $('section').append('<article>' + place + '</article>');
+          $('section.places').append(htmlString);
         });
-      }
-    );
+      },
+    });
   });
 });
